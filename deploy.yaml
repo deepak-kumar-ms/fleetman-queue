@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: queue
-        image: richardchesterwood/k8s-fleetman-queue:release2
+        image: ${REPOSITORY_TAG}
 ---
 apiVersion: v1
 kind: Service
