@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // You must set the following environment variables
-        SCANNER_HOME = tool 'sonar-scanner'
+        SCANNER_HOME = tool 'sonar-scanner'  // Remove this if unused
         AWS_ACCOUNT_ID = credentials('ACCOUNT_ID')
         AWS_ECR_REPO_NAME = credentials('ECR_REPO_QUEUE')
         AWS_DEFAULT_REGION = 'us-east-1'
@@ -25,25 +25,6 @@ pipeline {
         stage('Checkout from Git') {
             steps {
                 git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
-            }
-        }
-
-        stage('Sonarqube Analysis') {
-            steps {
-				withSonarQubeEnv('sonar-server') {
-					sh ''' $SCANNER_HOME/bin/sonar-scanner \
-					-Dsonar.projectName=fleetman-queue \
-					-Dsonar.projectKey=fleetman-queue '''
-				}
-                
-            }
-        }
-
-        stage('Quality Check') {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token' 
-                }
             }
         }
 
